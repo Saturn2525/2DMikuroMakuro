@@ -5,23 +5,25 @@ using UnityEngine;
 public class FollowCamera : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Transform target; // ’Ç]‘ÎÛiƒvƒŒƒCƒ„[‚È‚Çj
-    private float followSpeed = 5f; // ˆÚ“®‘¬“x
+    public Transform target; // è¿½å¾“å¯¾è±¡ï¼ˆãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãªã©ï¼‰
+    [SerializeField] private float followSpeed = 5f; // ç§»å‹•é€Ÿåº¦
     private float YAbs;
 
     void FixedUpdate()
     {
-        // Œ»İ‚ÌˆÊ’u‚ğæ“¾
+        // ç¾åœ¨ã®ä½ç½®ã‚’å–å¾—
         Vector3 newPosition = transform.position;
-        // XÀ•W‚Ì‚İ‚ğ’Ç]
+        // Xåº§æ¨™ã®ã¿ã‚’è¿½å¾“
         newPosition.x = Mathf.Lerp(transform.position.x, target.position.x, followSpeed * Time.deltaTime);
-        YAbs=Mathf.Abs(newPosition.y - target.position.y);
-        Debug.Log($"Y‹——£={YAbs}");
+        YAbs = Mathf.Abs(newPosition.y - target.position.y);
         if (target.position.y > 0 || YAbs > 3.5f)
         {
             newPosition.y = Mathf.Lerp(transform.position.y, target.position.y, followSpeed * Time.deltaTime);
         }
-        // ˆÊ’u‚ğXV
+
+        // ä½ç½®ã‚’æ›´æ–°
         transform.position = newPosition;
     }
+    
+    
 }
