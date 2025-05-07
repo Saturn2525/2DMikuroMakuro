@@ -18,17 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float moveInput = 0f;
 
-    public float Direction
-    {
-        get => moveInput;
-        set
-        {
-            moveInput = value;
-            spriteRenderer.flipX = moveInput < 0f;
-        }
-    }
-
-    private void Start()
+    private void Update()
     {
         OnMove();
     }
@@ -47,11 +37,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove()
     {
-        // float x = Input.GetAxis("Horizontal");
-        // x = Mathf.Abs(x) > 0.3f ? x : 0f;
-        // moveInput = x;
-
-        moveInput = 1f;
+        float x = Input.GetAxis("Horizontal");
+        x = Mathf.Abs(x) > 0.1f ? x : 0f;
+        moveInput = x;
+        spriteRenderer.flipX = moveInput < 0f;
     }
 
     private void PerformMove(ref Vector2 velocity)

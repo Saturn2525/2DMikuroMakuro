@@ -19,7 +19,6 @@ namespace CS_Script.Haruo
             {
                 if (playerMovement != null)
                 {
-                    playerMovement.Direction = -playerMovement.Direction;
                     shooter.Flip();
                 }
             };
