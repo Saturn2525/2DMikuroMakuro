@@ -22,12 +22,12 @@ public class Shooter : MonoBehaviour
 
     private void Update()
     {
-        if (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.rightTrigger.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame)
         {
             OnBigShot();
         }
 
-        if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.leftTrigger.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
         {
             OnSmallShot();
         }

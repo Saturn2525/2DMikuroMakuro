@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleFactor: 3
-  scaleDuration: 0.5
+  scaleDuration: 1
   pivot: {x: 0.5, y: 0.5}
   bouncePower: 0
   minStep: 0

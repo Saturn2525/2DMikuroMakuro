@@ -28,7 +28,7 @@ namespace CS_Script.Haruo
         protected virtual void Start()
         {
             targetScale = Vector2.one + Vector2.one * scaleFactor * Step;
-            defaultScale = Vector2.one;
+            defaultScale = Vector2.one + Vector2.one * scaleFactor * Step;
             defaultPosition = transform.localPosition;
             defaultWorldPosition = transform.position;
             LatestScaleTime = Time.time;
@@ -38,7 +38,7 @@ namespace CS_Script.Haruo
         {
             defaultPosition = transform.localPosition;
             defaultWorldPosition = transform.position;
-            defaultScale = Vector2.one;
+            defaultScale = Vector2.one + Vector2.one * scaleFactor * Step;
             targetScale = Vector2.one + Vector2.one * scaleFactor * Step;
             ScaleAround(GetLocalPivot(), targetScale);
         }

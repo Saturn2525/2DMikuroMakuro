@@ -12,15 +12,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float damping;
     [SerializeField] private Vector2 externalDamping;
     [SerializeField] private float gravity;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private AnimationCurve additionalJumpPower;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Vector2 externalForce = Vector2.zero;
 
     private float moveInput = 0f;
+    private float lastMoveSide = 0f;
+    private float jumpStartTime = 0f;
+    [SerializeField] private bool isJumping = false;
 
     private void Update()
     {
         OnMove();
+
+        if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            OnJump();
+        }
+
+        if (Gamepad.current != null && Gamepad.current.buttonSouth.wasReleasedThisFrame || Keyboard.current.spaceKey.wasReleasedThisFrame)
+        {
+            isJumping = false; 
+        }
     }
 
     private void FixedUpdate()
@@ -32,6 +47,14 @@ public class PlayerMovement : MonoBehaviour
         PerformDamping(ref velocity);
         PerformExternalForce();
 
+        if (isJumping)
+        {
+            // ジャンプ中の追加の力を加える
+            float jumpTime = Time.time - jumpStartTime;
+            float additionalPower = additionalJumpPower.Evaluate(jumpTime);
+            velocity += new Vector2(0f, additionalPower);
+        }
+
         rb.velocity = velocity + externalForce;
     }
 
@@ -39,8 +62,37 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         x = Mathf.Abs(x) > 0.1f ? x : 0f;
+
+        if (x == 0f)
+        {
+            spriteRenderer.flipX = lastMoveSide < 0f;
+        }
+        else
+        {
+            spriteRenderer.flipX = moveInput < 0f;
+            lastMoveSide = moveInput;
+        }
+
         moveInput = x;
-        spriteRenderer.flipX = moveInput < 0f;
+    }
+
+    private void OnJump()
+    {
+        if (!IsGround())
+            return;
+
+        // 重力を初期化して力を加える
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        rb.AddForce(new Vector2(0f, jumpPower), ForceMode2D.Impulse);
+        isJumping = true;
+        jumpStartTime = Time.time;
+    }
+
+    private bool IsGround()
+    {
+        const float checkDistance = 1.2f;
+        int mask = ~LayerMask.GetMask("Player");
+        return Physics2D.BoxCast(transform.position, transform.localScale * 0.5f, 0f, -transform.up, checkDistance, mask);
     }
 
     private void PerformMove(ref Vector2 velocity)
