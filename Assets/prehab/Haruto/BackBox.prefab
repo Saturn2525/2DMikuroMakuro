@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 821770227593550070}
   m_Layer: 0
   m_Name: BackBox
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -270153446, guid: 3e5695e8df0396d438d5242d576f3b2f, type: 3}
-  m_Color: {r: 0.9308176, g: 0.27807435, b: 0.27807435, a: 1}
+  m_Color: {r: 1, g: 0.8116592, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -145,9 +145,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleFactor: 1.5
   scaleDuration: 0.5
-  pivot: {x: 0.5, y: 0.5}
-  bouncePower: 40
+  enablePivotScaling: 1
+  pivot: {x: 1, y: 0}
+  bouncePower: 75
   minStep: 1
   maxStep: 2
-  Step: 1
+  step: 1
   backTime: 1

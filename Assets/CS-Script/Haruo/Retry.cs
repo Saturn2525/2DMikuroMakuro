@@ -8,7 +8,7 @@ public class Retry : MonoBehaviour
 {
     void Update()
     {
-        if (Gamepad.current.buttonWest.wasPressedThisFrame || Keyboard.current.rKey.wasPressedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.buttonWest.wasPressedThisFrame || Keyboard.current.rKey.wasPressedThisFrame)
         {
             Debug.Log("Retrying the game...");
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -10,9 +10,9 @@ namespace CS_Script
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Box box))
+            if (other.TryGetComponent(out IScalable scalable))
             {
-                box.DoScale(isBig);
+                scalable.DoScale(isBig);
                 Destroy(gameObject);
             }
         }
