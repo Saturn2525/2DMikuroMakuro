@@ -12,27 +12,41 @@ public class Big : MonoBehaviour
 
     public void debag()
     {
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
         {
-            if (BigPass == 0 || BigPass == -1)
-            {// this.transform.localScale = new Vector3(4, 4, 1);
-                transform.localScale *= scaleFactor;
-                boxSize *= scaleFactor;
-                BigPass++;
-                CheckBounce();
-            }
+            ToBig();
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            if (BigPass == 0 || BigPass == 1)
-            {//this.transform.localScale = new Vector3(1, 1, 1);
-                transform.localScale /= scaleFactor;
-                boxSize /= scaleFactor;
-                BigPass--;
-            }
+            ToSmall();
         }
+
         Debug.Log("タッチ！");
     }
+
+    public void ToBig()
+    {
+        if (BigPass == 0 || BigPass == -1)
+        {
+            // this.transform.localScale = new Vector3(4, 4, 1);
+            transform.localScale *= scaleFactor;
+            boxSize *= scaleFactor;
+            BigPass++;
+            CheckBounce();
+        }
+    }
+
+    public void ToSmall()
+    {
+        if (BigPass == 0 || BigPass == 1)
+        {
+            //this.transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale /= scaleFactor;
+            boxSize /= scaleFactor;
+            BigPass--;
+        }
+    }
+
     public void CheckBounce()
     {
         // ターゲット位置を中心に検出
