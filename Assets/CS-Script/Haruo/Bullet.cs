@@ -8,12 +8,25 @@ namespace CS_Script
     {
         [SerializeField] private bool isBig;
 
+        public float Direction => direction;
+        private float direction;
+
+        public void SetDirection(float direction)
+        {
+            this.direction = direction;
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out IScalable scalable))
             {
                 scalable.DoScale(isBig);
                 Destroy(gameObject);
+
+                if (other.TryGetComponent(out EraserEnemy enemy))
+                {
+                    enemy.SetDirection(direction);
+                }
             }
         }
     }

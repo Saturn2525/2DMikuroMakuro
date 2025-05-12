@@ -11,6 +11,7 @@ namespace CS_Script.Haruo
         [SerializeField] private GameObject bigBullet;
         [SerializeField] private Transform visualizer;
         [SerializeField] private Rigidbody2D playerRig;
+        [SerializeField] private PlayerMovement playerMovement;
 
         private Vector2 shootDirection;
         private Vector2 lastSideInput;
@@ -65,6 +66,8 @@ namespace CS_Script.Haruo
                 bulletRig.velocity += new Vector2(0f, Mathf.Min(0f, playerRig.velocity.y));
             }
 
+            bulletObj.GetComponent<Bullet>().SetDirection(playerMovement.Direction);
+
             lastShootTime = Time.time;
         }
 
@@ -87,6 +90,8 @@ namespace CS_Script.Haruo
             {
                 bulletRig.velocity += new Vector2(0f, Mathf.Min(0f, playerRig.velocity.y));
             }
+            
+            bulletObj.GetComponent<Bullet>().SetDirection(playerMovement.Direction);
 
             lastShootTime = Time.time;
         }

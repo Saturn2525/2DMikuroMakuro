@@ -21,6 +21,7 @@ namespace CS_Script.Haruo
         private float moveInput = 0f;
         private float lastMoveSide = 0f;
         private float jumpStartTime = 0f;
+        public float Direction => spriteRenderer.flipX ? 1f : -1f;
 
         /// <summary>
         /// 外力を加える
