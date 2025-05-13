@@ -75,7 +75,7 @@ namespace CS_Script.Haruo
             OnScale?.Invoke(GetScaleState());
         }
 
-        protected void ResetScale()
+        public void ResetScale()
         {
             // スケールを元に戻す
             DoAroundScale(defaultScale);

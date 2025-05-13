@@ -9,6 +9,9 @@ public class SpriteAnimation : MonoBehaviour
     
     public void SetSprite(int index)
     {
+        if (0 > index || index >= sprites.Length)
+            return;
         
+        spriteRenderer.sprite = sprites[index];
     }
 }

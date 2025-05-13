@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CS_Script.Haruo
 {
@@ -9,6 +10,8 @@ namespace CS_Script.Haruo
         [SerializeField] private Rigidbody2D rig;
         [SerializeField] private Renderer meshRenderer;
         [SerializeField] private ScaleObject scaleObject;
+        [SerializeField] private SpriteAnimation spriteAnimation;
+        [SerializeField] private int hp = 8;
         [SerializeField] private float movePower = 10f;
         [SerializeField] private float fallDistance = 3f;
         [SerializeField] private float fallYOffset = 5f;
@@ -18,7 +21,9 @@ namespace CS_Script.Haruo
         [SerializeField] private float fallSpeed = 2f;
 
         private float direction = 1f;
+        private int defaultHp;
         private PlayerMovement playerMovement;
+        private bool isJumping;
 
         private void Start()
         {
@@ -29,6 +34,7 @@ namespace CS_Script.Haruo
 
             scaleObject.OnScale += OnScale;
             playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
+            defaultHp = hp;
 
             MoveState().Forget();
         }
@@ -43,9 +49,14 @@ namespace CS_Script.Haruo
             }
         }
 
-
         private async UniTaskVoid MoveState()
         {
+            scaleObject.ResetScale();
+
+
+            float fallBeginDistance = Random.value >= 0.5f ? fallDistance : fallDistance + 4f;
+            float speed = Random.value >= 0.5f ? movePower : movePower + 10f;
+
             // à⁄ìÆíÜ
             while (!destroyCancellationToken.IsCancellationRequested)
             {
@@ -53,14 +64,14 @@ namespace CS_Script.Haruo
 
                 // ÉvÉåÉCÉÑÅ[ÇÃï˚å¸å¸Ç≠
                 direction = Mathf.Sign(dx);
-                rig.velocity = new Vector2(movePower * direction, rig.velocity.y);
+                rig.velocity = new Vector2(speed * direction, rig.velocity.y);
 
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, destroyCancellationToken);
 
                 float distance = Mathf.Abs(dx);
 
                 // àÍíËãóó£Ç…ãﬂÇ√Ç¢ÇΩÇÁà⁄ìÆäÆóπ
-                if (distance <= fallDistance)
+                if (distance <= fallBeginDistance)
                 {
                     JumpState().Forget();
                     return;
@@ -72,6 +83,7 @@ namespace CS_Script.Haruo
         {
             rig.velocity = Vector2.zero;
             rig.isKinematic = true;
+            isJumping = true;
 
             Vector2 targetPos = (Vector2)playerMovement.transform.position + new Vector2(0f, fallYOffset);
             Vector3 startPos = transform.position;
@@ -87,6 +99,7 @@ namespace CS_Script.Haruo
 
                 if (t > 0.99f)
                 {
+                    isJumping = false;
                     await UniTask.Delay(TimeSpan.FromSeconds(fallDelay), cancellationToken: destroyCancellationToken);
                     rig.isKinematic = false;
                     rig.velocity = new Vector2(0f, -fallSpeed);
@@ -106,6 +119,25 @@ namespace CS_Script.Haruo
             {
                 direction = -direction;
             }
+
+            if (!isJumping && collision.gameObject.CompareTag("Ground"))
+            {
+                hp -= scaleObject.CurrentStep;
+                hp = Mathf.Max(0, hp);
+                spriteAnimation.SetSprite(defaultHp - hp);
+                isJumping = true;
+
+                if (hp == 0)
+                {
+                    Death().Forget();
+                }
+            }
+        }
+
+        private async UniTaskVoid Death()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+            Destroy(gameObject);
         }
 
         private void OnCollisionStay2D(Collision2D other)
