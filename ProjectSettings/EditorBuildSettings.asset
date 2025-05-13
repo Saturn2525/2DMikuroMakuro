@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MapHaruto.unity
     guid: 0b23e13edd302d244bc9db09dddfd615
   m_configObjects: {}
