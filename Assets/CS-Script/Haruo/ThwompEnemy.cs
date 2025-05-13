@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CS_Script.Haruo
 {
-    public class EraserEnemy : MonoBehaviour
+    public class ThwompEnemy : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D rig;
         [SerializeField] private Renderer meshRenderer;
@@ -12,6 +12,7 @@ namespace CS_Script.Haruo
         [SerializeField] private float rotationPower;
 
         private float direction = 1f;
+        private PlayerMovement playerMovement;
 
         private void Start()
         {
@@ -21,6 +22,7 @@ namespace CS_Script.Haruo
             }
 
             scaleObject.OnScale += OnScale;
+            playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
         }
 
         private async void OnScale(State state)
@@ -35,6 +37,7 @@ namespace CS_Script.Haruo
 
         private void FixedUpdate()
         {
+            direction = -Mathf.Sign((playerMovement.transform.position - transform.position).x);
             rig.angularVelocity = rotationPower * direction;
         }
 
@@ -69,11 +72,6 @@ namespace CS_Script.Haruo
         private void OnBecameVisible()
         {
             rig.isKinematic = false;
-        }
-
-        public void SetDirection(float direction)
-        {
-            this.direction = direction;
         }
     }
 }

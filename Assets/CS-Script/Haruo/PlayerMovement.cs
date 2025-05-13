@@ -17,10 +17,12 @@ namespace CS_Script.Haruo
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private Vector2 externalForce = Vector2.zero;
         [SerializeField] private bool isJumping = false;
+        [SerializeField] private Shooter shooter;
 
         private float moveInput = 0f;
         private float lastMoveSide = 0f;
         private float jumpStartTime = 0f;
+        public float Direction => spriteRenderer.flipX ? 1f : -1f;
 
         /// <summary>
         /// 外力を加える
@@ -40,6 +42,12 @@ namespace CS_Script.Haruo
                 OnJump();
             }
 
+            if (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame ||
+                Keyboard.current.cKey.wasPressedThisFrame)
+            {
+                shooter.ChangeShootMode();
+                Debug.Log("Shoot mode changed!");
+            }
             if (Gamepad.current != null && Gamepad.current.buttonSouth.wasReleasedThisFrame || Keyboard.current.spaceKey.wasReleasedThisFrame)
             {
                 isJumping = false;

@@ -150,7 +150,7 @@ Rigidbody2D:
   m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 6200000, guid: e851c4b63d2e83341aa9adfb47926f5a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -175,8 +175,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rig: {fileID: 5333467889628582740}
+  meshRenderer: {fileID: 7350716782852069796}
   scaleObject: {fileID: 608525389347392276}
-  rotationPower: 220
+  rotationPower: 4000
 --- !u!114 &608525389347392276
 MonoBehaviour:
   m_ObjectHideFlags: 0
