@@ -20,8 +20,9 @@ namespace CS_Script.Haruo
             Vector3 newPosition = transform.position;
             // X座標のみを追従
             newPosition.x = Mathf.Lerp(transform.position.x, target.position.x, followSpeed * Time.deltaTime);
+            newPosition.y = Mathf.Lerp(transform.position.y, target.position.y, followSpeed * Time.deltaTime);
             // 位置を更新
-            transform.position = new Vector3(newPosition.x, targetY + yOffset, newPosition.z);
+            transform.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
         }
     }
 }
