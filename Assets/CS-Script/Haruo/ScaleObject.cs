@@ -51,7 +51,7 @@ namespace CS_Script.Haruo
         private Vector2 defaultPosition;
         private bool isUpScaling = false;
         private float latestScaleTime;
-
+        
         public void DoScale(bool isBig)
         {
             // 段階条件を満たしていない場合は何もしない
@@ -81,28 +81,30 @@ namespace CS_Script.Haruo
             DoAroundScale(defaultScale);
             latestScaleTime = Time.time;
             targetScale = defaultScale;
-            step = 0;
+            step = defaultStep;
         }
 
+        private int defaultStep;
         protected virtual void Start()
         {
+            defaultStep = step;
             SetDefaultParams();
             latestScaleTime = Time.time;
         }
 
-        private void OnValidate()
-        {
-            // エディタ側で段階を変更したときに反映する
-            step = Mathf.Clamp(step, minStep, maxStep);
-            SetDefaultParams();
-
-            Vector2 targetPivot = GetTargetPivot();
-            ScaleAround(targetPivot, targetScale);
-        }
+        // private void OnValidate()
+        // {
+        //     // エディタ側で段階を変更したときに反映する
+        //     step = Mathf.Clamp(step, minStep, maxStep);
+        //     SetDefaultParams();
+        //
+        //     Vector2 targetPivot = GetTargetPivot();
+        //     ScaleAround(targetPivot, targetScale);
+        // }
 
         private void SetDefaultParams()
         {
-            targetScale = Vector2.one + Vector2.one * scaleFactor * step;
+            targetScale = (Vector2)transform.localScale + Vector2.one * scaleFactor * step;
             defaultScale = targetScale;
             defaultPosition = transform.localPosition;
         }
