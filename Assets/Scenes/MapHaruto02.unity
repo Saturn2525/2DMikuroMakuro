@@ -4100,6 +4100,7 @@ MonoBehaviour:
   rb: {fileID: 2050758484}
   externalForce: {x: 0, y: 0}
   isJumping: 0
+  shooter: {fileID: 0}
 --- !u!114 &2050758486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4116,8 +4117,13 @@ MonoBehaviour:
   shootInterval: 0.3
   smallBullet: {fileID: 5444686152839913258, guid: 69dd858d821ea2541a5b83aa37e4f669, type: 3}
   bigBullet: {fileID: 1606167537189327026, guid: 10a5fcc6425ced14590e25fd9afcdaef, type: 3}
+  smallGrenade: {fileID: 0}
+  bigGrenade: {fileID: 0}
   visualizer: {fileID: 650757841}
   playerRig: {fileID: 2050758484}
+  shootDir: {fileID: 0}
+  grenadeAngle: 45
+  isFirstGrenade: 0
   playerMovement: {fileID: 2050758485}
 --- !u!61 &2050758487
 BoxCollider2D:
