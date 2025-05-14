@@ -36,7 +36,6 @@ namespace CS_Script.Haruo
             playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
             defaultHp = hp;
 
-            MoveState().Forget();
         }
 
         private async void OnScale(State state)
@@ -85,7 +84,9 @@ namespace CS_Script.Haruo
             rig.isKinematic = true;
             isJumping = true;
 
-            Vector2 targetPos = (Vector2)playerMovement.transform.position + new Vector2(0f, fallYOffset);
+            float offset = Random.value >= 0.5f ? fallYOffset : fallYOffset + 2f;
+
+            Vector2 targetPos = (Vector2)playerMovement.transform.position + new Vector2(0f, offset);
             Vector3 startPos = transform.position;
             Vector2 diff = targetPos - (Vector2)transform.position;
 
@@ -150,7 +151,13 @@ namespace CS_Script.Haruo
 
         private void OnBecameVisible()
         {
+            if (!rig.isKinematic)
+            {
+                return;
+            }
+            
             rig.isKinematic = false;
+            MoveState().Forget();
         }
     }
 }
