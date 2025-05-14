@@ -16,7 +16,8 @@ namespace CS_Script.Naebo
         [SerializeField] private float floatingFactor;
         private void Start()
         {
-            
+            _currentPos = transform.position; // 現在位置を初期化
+            _beforePos = transform.position; // 前回の位置を初期化
         }
 
         private void FixedUpdate()
@@ -34,6 +35,26 @@ namespace CS_Script.Naebo
                 // 回転
                 _rb.AddForce(Vector2.right * floatingFactor, ForceMode2D.Force);
             }
+
+            CalculateMovementAmount();
+        }
+
+        private Vector2 _movementAmount;
+        // 移動量を取得するプロパティ
+        public Vector2 MovementAmount 
+        {
+            get { return _movementAmount; }
+        }
+        
+        private Vector2 _beforePos; // 前回の位置を格納
+        private Vector2 _currentPos; // 現在の位置を格納
+        private void CalculateMovementAmount()
+        {
+            // 現在位置と前回の位置の差分を計算
+            _currentPos = (Vector2)transform.position;
+            _movementAmount = _currentPos - _beforePos;
+            _beforePos = _currentPos; // 前回位置を更新
+            Debug.Log(_movementAmount);
         }
     }
 }

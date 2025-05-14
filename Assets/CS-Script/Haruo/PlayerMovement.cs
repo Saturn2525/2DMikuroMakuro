@@ -1,3 +1,6 @@
+using System;
+using CS_Script.Naebo;
+using Naebo;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +21,9 @@ namespace CS_Script.Haruo
         [SerializeField] private Vector2 externalForce = Vector2.zero;
         [SerializeField] private bool isJumping = false;
         [SerializeField] private Shooter shooter;
+        [SerializeField] private BalloonShip balloon;
+
+        private Vector2 movementAmount;
 
         private float moveInput = 0f;
         private float lastMoveSide = 0f;
@@ -70,8 +76,32 @@ namespace CS_Script.Haruo
                 float additionalPower = additionalJumpPower.Evaluate(jumpTime);
                 velocity += new Vector2(0f, additionalPower);
             }
-
             rb.velocity = velocity + externalForce;
+            
+            if (isOnShip && balloon.MovementAmount != Vector2.zero)
+            {
+                movementAmount = rb.position + balloon.MovementAmount;
+                rb.MovePosition(movementAmount);
+            }
+        }
+
+        private bool isOnShip;
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Ship"))
+            {
+                isOnShip = true;
+                Debug.Log("Ship entered!");
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Ship"))
+            {
+                isOnShip = false;
+                Debug.Log("Get OffShip!");
+            }
         }
 
         private void OnMove()

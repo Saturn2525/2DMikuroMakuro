@@ -7,6 +7,7 @@ TagManager:
   - Slope
   - Ground
   - Dirt
+  - Ship
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Player
   - Ground
   - Grenade
-  - 
+  - Balloon
   - 
   - 
   - 
