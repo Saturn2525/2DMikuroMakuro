@@ -62,6 +62,8 @@ namespace CS_Script.Haruo
 
         private void FixedUpdate()
         {
+           
+            
             Vector2 velocity = rb.velocity;
             velocity.y += gravity; // 重力を加算
 
@@ -81,7 +83,7 @@ namespace CS_Script.Haruo
             if (isOnShip && balloon.MovementAmount != Vector2.zero)
             {
                 movementAmount = rb.position + balloon.MovementAmount;
-                rb.MovePosition(movementAmount);
+                rb.position = movementAmount;
             }
         }
 
@@ -95,14 +97,14 @@ namespace CS_Script.Haruo
             }
         }
 
-        private void OnCollisionExit2D(Collision2D other)
+        /*private void OnCollisionExit2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Ship"))
             {
                 isOnShip = false;
                 Debug.Log("Get OffShip!");
             }
-        }
+        }*/
 
         private void OnMove()
         {

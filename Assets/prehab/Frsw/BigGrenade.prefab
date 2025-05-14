@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBig: 1
+  balloon: {fileID: 7758306522247882494, guid: 43a36664d1fe1174d8fa83b1b4b72101, type: 3}
 --- !u!58 &2355131656468930407
 CircleCollider2D:
   m_ObjectHideFlags: 0

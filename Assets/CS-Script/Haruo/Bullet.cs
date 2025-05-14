@@ -1,5 +1,6 @@
 ﻿using System;
 using CS_Script.Haruo;
+using CS_Script.Naebo;
 using UnityEngine;
 
 namespace CS_Script
@@ -7,6 +8,7 @@ namespace CS_Script
     public class Bullet : MonoBehaviour
     {
         [SerializeField] private bool isBig;
+        [SerializeField] private BalloonShip balloon;
 
         public float Direction => direction;
         private float direction;
@@ -14,6 +16,19 @@ namespace CS_Script
         public void SetDirection(float direction)
         {
             this.direction = direction;
+        }
+
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+
+        private Rigidbody2D rb;
+        private Vector2 movementAmount;
+        private void FixedUpdate()
+        {
+            movementAmount = rb.position + balloon.MovementAmount;
+            rb.position = movementAmount;
         }
 
         private void OnTriggerEnter2D(Collider2D other)

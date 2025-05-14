@@ -25,7 +25,7 @@ namespace CS_Script.Naebo
             if (leftBalloon.CurrentStep > defaultCou)
             {
                 _rb.AddForce(Vector2.up * (floatingFactor * leftBalloon.CurrentStep),  ForceMode2D.Force);
-                // 回転
+               // transform.Rotate();
                 _rb.AddForce(Vector2.left * floatingFactor, ForceMode2D.Force);
             }
 
