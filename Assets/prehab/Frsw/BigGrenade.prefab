@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2583978885600297505}
   - component: {fileID: 2355131656468930407}
   - component: {fileID: 3863435802763928380}
+  - component: {fileID: -5605101207584541505}
   m_Layer: 0
   m_Name: BigGrenade
   m_TagString: Untagged
@@ -129,7 +130,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -151,7 +152,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: df546f1f1621953449c03897d2343488, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -161,4 +162,17 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
+--- !u!114 &-5605101207584541505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606167537189327026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91df3502797da6741a69f5750b6a933f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scalePower: {x: 2.5, y: 4, z: 2.5}

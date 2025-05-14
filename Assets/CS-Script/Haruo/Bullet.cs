@@ -29,5 +29,19 @@ namespace CS_Script
                 }
             }
         }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.collider.TryGetComponent(out IScalable scalable))
+            {
+                scalable.DoScale(isBig);
+                Destroy(gameObject);
+
+                if (collision.collider.TryGetComponent(out EraserEnemy enemy))
+                {
+                    enemy.SetDirection(direction);
+                }
+            }
+        }
     }
 }
