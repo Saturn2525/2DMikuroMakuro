@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 7012289226934622655}
   - component: {fileID: 5831582933655546159}
   - component: {fileID: 1355319082260040961}
+  - component: {fileID: 1133657877231448390}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -291,9 +292,10 @@ MonoBehaviour:
   visualizer: {fileID: 5302930890619326891}
   playerRig: {fileID: 2875785571703158381}
   shootDir: {fileID: 9187140074338467914}
-  grenadeAngle: 45
-  isFirstGrenade: 0
+  grenadeAngle: 54
+  isFirstGrenade: 1
   playerMovement: {fileID: 7458196353582423400}
+  ballSimulator: {fileID: 1133657877231448390}
 --- !u!61 &5831582933655546159
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -356,6 +358,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   damageInterval: 0.5
+--- !u!114 &1133657877231448390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5176769472397596259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a468e868e204aac8f3b2bacfa7e36d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballSimPrefab: {fileID: 5444686152839913258, guid: 697d98ca8ed7ea6409071591803ccb37, type: 3}
+  startPosition: {fileID: 8235003975270992215}
 --- !u!1 &8235003975270992215
 GameObject:
   m_ObjectHideFlags: 0

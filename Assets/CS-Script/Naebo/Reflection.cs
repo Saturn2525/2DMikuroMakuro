@@ -6,7 +6,7 @@ namespace CS_Script.Naebo
 {
     public class Reflection : MonoBehaviour
     {
-        [Header("”½Ë‚Í—Í‚ğZ”{‚·‚é")]
+        [Header("åå°„æ™‚ã¯åŠ›ã‚’ã€‡å€ã™ã‚‹")]
         [SerializeField] private Vector3 scalePower;
         private Rigidbody2D _rb;
         private bool _wait;
@@ -28,10 +28,10 @@ namespace CS_Script.Naebo
             {
                 _rb = gameObject.GetComponent<Rigidbody2D>();
             }
-            // ’†S + ‚‚³‚Ì”¼•ª
-            float topY = other.transform.position.y + (other.transform.localScale.y / 2f);    // cube‚Ìã–Ê‚Ì‚‚³æ“¾
+            // ä¸­å¿ƒ + é«˜ã•ã®åŠåˆ†
+            float topY = other.transform.position.y + (other.transform.localScale.y / 2f);    // cubeã®ä¸Šé¢ã®é«˜ã•å–å¾—
             
-            // ã–Ê‚¶‚á‚È‚¯‚ê‚Î”½Ë
+            // ä¸Šé¢ã˜ã‚ƒãªã‘ã‚Œã°åå°„
             if (_rb.transform.position.y < topY)
             {
                 Reflect(other);
@@ -45,16 +45,16 @@ namespace CS_Script.Naebo
 
         private void Reflect(Collision2D collision)
         {
-            // “üËƒxƒNƒgƒ‹ (‘¬“xj
+            // å…¥å°„ãƒ™ã‚¯ãƒˆãƒ« (é€Ÿåº¦ï¼‰
             _inDirection = (Vector2)_rb.velocity;
-            // –@üƒxƒNƒgƒ‹ Ú’n“_‚©‚çæ“¾
+            // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ« æ¥åœ°ç‚¹ã‹ã‚‰å–å¾—
             // Vector3 inNormal =  other.contacts[0].normal;
             Vector2 inNormal = collision.contacts[0].normal;
         
-            // ”½ËƒxƒNƒgƒ‹i‘¬“xj
+            // åå°„ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆé€Ÿåº¦ï¼‰
             Vector2 result = Vector2.Reflect(_inDirection, inNormal);
             
-            // ”½ËŒã‚ÌƒxƒNƒgƒ‹‚ªã•ûŒü‚È‚ç‘¬“x‚ğ”½‰f
+            // åå°„å¾Œã®ãƒ™ã‚¯ãƒˆãƒ«ãŒä¸Šæ–¹å‘ãªã‚‰é€Ÿåº¦ã‚’åæ˜ 
             if (result.y > 0)
             {
                 _rb.velocity = Vector2.zero;
@@ -68,7 +68,7 @@ namespace CS_Script.Naebo
         }
         
 
-        //OnCollision‚ª‰½“x‚à‹N‚«‚È‚¢‚æ‚¤‚É‘Ò‹@ŠÔ“ü‚ê‚Ä‚İ‚é
+        //OnCollisionãŒä½•åº¦ã‚‚èµ·ããªã„ã‚ˆã†ã«å¾…æ©Ÿæ™‚é–“å…¥ã‚Œã¦ã¿ã‚‹
         private IEnumerator WaitAndReflective()
         {
             _wait = true;

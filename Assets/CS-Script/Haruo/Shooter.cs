@@ -1,3 +1,4 @@
+using CS_Script.Naebo;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -19,6 +20,7 @@ namespace CS_Script.Haruo
         [Header("最初の射撃モードをグレに")]
         [SerializeField] private bool isFirstGrenade;
         [SerializeField] private PlayerMovement playerMovement;
+        [SerializeField] private BallSimulator ballSimulator;
 
         private Vector2 shootDirection;
         private Vector2 lastSideInput;
@@ -30,10 +32,12 @@ namespace CS_Script.Haruo
             shootDirection = Vector2.right;
             lastSideInput = Vector2.right;
             isGrenadeShoot = isFirstGrenade;
+            ballSimulator.SimulateSwitch = isFirstGrenade;
         }
 
         private void Update()
         {
+            CalcVelocity();
             if (Gamepad.current != null && Gamepad.current.rightTrigger.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame)
             {
                 OnBigShot();
@@ -53,17 +57,26 @@ namespace CS_Script.Haruo
             // 視点のオブジェクト入力の方向に向ける
             float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
           
+                // 左右
                 if (isGrenadeShoot && shootDirection == Vector2.right)
                 {
+                    if (ballSimulator.SimulateSwitch == false)
+                        ballSimulator.SimulateSwitch = true;
+                    
                     visualizer.rotation = Quaternion.Euler(0f, 0f, angle + grenadeAngle);
                 }
                 else if (isGrenadeShoot && shootDirection == Vector2.left)
                 {
+                    if (ballSimulator.SimulateSwitch == false)
+                        ballSimulator.SimulateSwitch = true;
+                    
                     visualizer.rotation = Quaternion.Euler(0f, 0f, angle - grenadeAngle);
                 }
-                else
+                else  
                 {
+                    // 上下
                     visualizer.rotation = Quaternion.Euler(0f, 0f, angle);
+                    ballSimulator.SimulateSwitch = false;
                 }
             
         }
@@ -72,14 +85,34 @@ namespace CS_Script.Haruo
         {
             if (isGrenadeShoot)
             {
-                isGrenadeShoot = false;
                 // 十時撃ちに切り替え
+                isGrenadeShoot = false;
+                ballSimulator.SimulateSwitch = false;
             }
             else
             {
-                isGrenadeShoot = true;
                 // グレポン撃ちに切り替え
+                isGrenadeShoot = true;
+                ballSimulator.SimulateSwitch = true;
             }
+        }
+
+        private Vector2 _velocity;
+        private void CalcVelocity()
+        {
+            shootDirection = (shootDir.position - visualizer.position).normalized;
+
+            _velocity = shootDirection * power + new Vector2(playerRig.velocity.x, 0f);
+            if (shootDirection.y > 0f)
+            {
+                _velocity += new Vector2(0f, Mathf.Max(0f, playerRig.velocity.y));
+            }
+            else if (shootDirection.y < 0f)
+            {
+               _velocity += new Vector2(0f, Mathf.Min(0f, playerRig.velocity.y));
+            }
+            
+            ballSimulator.Simulate(_velocity);
         }
 
         private void OnBigShot()
@@ -94,7 +127,6 @@ namespace CS_Script.Haruo
             if (isGrenadeShoot)
             {
                 // 絶対にもっと楽な方法あるだろ
-                shootDirection = (shootDir.position - visualizer.position).normalized;
                 bulletObj = Instantiate(bigGrenade, visualizer.position + (Vector3)shootDirection * 0.5f, Quaternion.identity);
             }
             else
@@ -103,17 +135,9 @@ namespace CS_Script.Haruo
             }
            
             Rigidbody2D bulletRig = bulletObj.GetComponent<Rigidbody2D>();
-          
-            bulletRig.velocity = shootDirection * power + new Vector2(playerRig.velocity.x, 0f);
 
-            if (shootDirection.y > 0f)
-            {
-                bulletRig.velocity += new Vector2(0f, Mathf.Max(0f, playerRig.velocity.y));
-            }
-            else if (shootDirection.y < 0f)
-            {
-                bulletRig.velocity += new Vector2(0f, Mathf.Min(0f, playerRig.velocity.y));
-            }
+            // 弾道予測のためにVelocityの計算をCalcVelocity()に移動
+            bulletRig.velocity = _velocity;
 
             bulletObj.GetComponent<Bullet>().SetDirection(playerMovement.Direction);
 
@@ -131,7 +155,6 @@ namespace CS_Script.Haruo
             
             if (isGrenadeShoot)
             {
-                shootDirection = (shootDir.position - visualizer.position).normalized;
                 bulletObj = Instantiate(smallGrenade, visualizer.position + (Vector3)shootDirection * 0.5f, Quaternion.identity);
             }
             else
@@ -139,18 +162,10 @@ namespace CS_Script.Haruo
                 bulletObj = Instantiate(smallBullet, visualizer.position + (Vector3)shootDirection * 0.5f, Quaternion.identity);
             }
             Rigidbody2D bulletRig = bulletObj.GetComponent<Rigidbody2D>();
-          
-            bulletRig.velocity = shootDirection * power + new Vector2(playerRig.velocity.x, 0f);
 
-            if (shootDirection.y > 0f)
-            {
-                bulletRig.velocity += new Vector2(0f, Mathf.Max(0f, playerRig.velocity.y));
-            }
-            else if (shootDirection.y < 0f)
-            {
-                bulletRig.velocity += new Vector2(0f, Mathf.Min(0f, playerRig.velocity.y));
-            }
-            
+            // 弾道予測のためにVelocityの計算をCalcVelocity()に移動
+            bulletRig.velocity = _velocity;
+          
             bulletObj.GetComponent<Bullet>().SetDirection(playerMovement.Direction);
 
             lastShootTime = Time.time;
