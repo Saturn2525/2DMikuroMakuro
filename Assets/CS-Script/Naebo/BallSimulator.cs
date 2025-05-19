@@ -84,8 +84,7 @@ namespace CS_Script.Naebo
                     var time = (i * 0.05f); // 〇秒ごとの位置を予測。
                     var x = time * force.x;
                     var y = (force.y * time) - 0.5f * (-Physics2D.gravity.y * GRAVITY_SCALE) * Mathf.Pow(time, 2.0f);
-                    // var z = t * force.z;
-
+                    
                     _simuratePointList[i].transform.position = startPosition.transform.position + new Vector3(x, y, 0f);
                 }
             }

@@ -59,11 +59,6 @@ namespace CS_Script.Naebo
             {
                 _rb.velocity = Vector2.zero;
                 _rb.velocity = Vector2.Scale(result, scalePower);
-                Debug.Log("Reflect");
-            }
-            else
-            {
-               // Debug.Log("NOT Reflect");
             }
         }
         
