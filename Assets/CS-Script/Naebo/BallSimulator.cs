@@ -8,12 +8,13 @@ namespace CS_Script.Naebo
     {
        [SerializeField] private GameObject ballSimPrefab; // 何でもOK。予測位置を表示するオブジェクト
 
-        private const int SIMULATE_COUNT = 20; // いくつ先までシュミレートするか
+        private const int SIMULATE_COUNT = 15; // いくつ先までシュミレートするか
         private const float　GRAVITY_SCALE = 5f; // Rigidbody2DのGravityScale
 
         [SerializeField] private GameObject startPosition; // 発射開始位置
        
-        private List<GameObject> _simuratePointList; 
+        private List<GameObject> _simuratePointList;
+        private List<Renderer> _rendererList;
 
         void Start()
         {
@@ -36,6 +37,11 @@ namespace CS_Script.Naebo
                         Debug.DrawLine(_simuratePointList[i - 1].transform.position,
                             _simuratePointList[i].transform.position);
                     }
+
+                    if (_rendererList[i].enabled == false)
+                    {
+                        RendererSwitch(false, i);
+                    }
                 }
             }
 
@@ -55,12 +61,14 @@ namespace CS_Script.Naebo
             if (ballSimPrefab != null)
             {
                 _simuratePointList = new List<GameObject>();
+                _rendererList = new List<Renderer>();
                 for (int i = 0; i < SIMULATE_COUNT; i++)
                 {
                     var obj = Instantiate(ballSimPrefab);
                     obj.transform.SetParent(transform);
                     obj.transform.position = Vector3.zero;
                     _simuratePointList.Add(obj);
+                    _rendererList.Add(obj.GetComponent<Renderer>());
                 }
             }
         }
@@ -94,9 +102,20 @@ namespace CS_Script.Naebo
         {
             if (_simuratePointList != null && _simuratePointList.Count > 0)
             {
-                foreach (var obj in _simuratePointList)
+                foreach (var obj in _rendererList)
                 {
-                    obj.gameObject.GetComponent<Renderer>().enabled = value;
+                    obj.enabled = value;
+                }
+            }
+        }
+        
+        private void RendererSwitch(bool value, int num)
+        {
+            if (_simuratePointList != null && _simuratePointList.Count > 0)
+            {
+                for (int i = num; i < SIMULATE_COUNT; i++)
+                {
+                   _rendererList[i].enabled = value;
                 }
             }
         }

@@ -17,9 +17,9 @@ namespace CS_Script.Naebo
             if (_wait)
                 return;
 
-            _bounceCou++;
-            if (_bounceCou >= 5)
-                Destroy(gameObject);
+            //  _bounceCou++;
+            /*if (_bounceCou >= 5)
+                Destroy(gameObject);*/
             
             if (!other.gameObject.CompareTag("Ground"))
                 return;
