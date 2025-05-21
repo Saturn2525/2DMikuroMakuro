@@ -27,16 +27,18 @@ namespace CS_Script.Haruo
 
         private void Start()
         {
-            if (!meshRenderer.isVisible)
-            {
-                rig.isKinematic = true;
-            }
-
             scaleObject.OnScale += OnScale;
             playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
             defaultHp = hp;
 
-            MoveState().Forget();
+            if (meshRenderer.isVisible)
+            {
+                MoveState().Forget();
+            }
+            else
+            {
+                rig.isKinematic = true;
+            }
         }
 
         private async void OnScale(State state)
@@ -53,29 +55,29 @@ namespace CS_Script.Haruo
         {
             scaleObject.ResetScale();
 
-
+            // ランダムで落下距離と落下速度を決定
             float fallBeginDistance = Random.value >= 0.5f ? fallDistance : fallDistance + 4f;
             float speed = Random.value >= 0.5f ? movePower : movePower + 10f;
 
-            // 移動中
+            // 移動ループ
             while (!destroyCancellationToken.IsCancellationRequested)
             {
                 float dx = (playerMovement.transform.position - transform.position).x;
 
-                // プレイヤーの方向向く
+                // プレイヤーの方向に移動
                 direction = Mathf.Sign(dx);
                 rig.velocity = new Vector2(speed * direction, rig.velocity.y);
 
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, destroyCancellationToken);
-
-                float distance = Mathf.Abs(dx);
-
                 // 一定距離に近づいたら移動完了
+                float distance = Mathf.Abs(dx);
                 if (distance <= fallBeginDistance)
                 {
                     JumpState().Forget();
                     return;
                 }
+
+                // フレーム更新
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, destroyCancellationToken);
             }
         }
 
@@ -85,24 +87,35 @@ namespace CS_Script.Haruo
             rig.isKinematic = true;
             isJumping = true;
 
-            Vector2 targetPos = (Vector2)playerMovement.transform.position + new Vector2(0f, fallYOffset);
+            float offset = Random.value >= 0.5f ? fallYOffset : fallYOffset + 2f;
+
+            Vector2 targetPos = (Vector2)playerMovement.transform.position + new Vector2(0f, offset);
             Vector3 startPos = transform.position;
             Vector2 diff = targetPos - (Vector2)transform.position;
 
-            float t = 0f;
+            float delta = 0f;
 
             while (!destroyCancellationToken.IsCancellationRequested)
             {
-                t += Time.fixedUnscaledDeltaTime / jumpDuration;
-                float y = 1f - Mathf.Pow(1f - t, 2);
-                transform.position = startPos + new Vector3(diff.x * t, diff.y * y);
-
-                if (t > 0.99f)
+                if (delta <= 0.99)
                 {
+                    // 指定座標まで指数関数的に移動
+                    delta += Time.fixedUnscaledDeltaTime / jumpDuration;
+                    float y = 1f - Mathf.Pow(1f - delta, 2);
+                    transform.position = startPos + new Vector3(diff.x * delta, diff.y * y);
+                }
+                // プレイヤーに到達したら
+                else
+                {
+                    // 空中で少し待機
                     isJumping = false;
                     await UniTask.Delay(TimeSpan.FromSeconds(fallDelay), cancellationToken: destroyCancellationToken);
+
+                    // 落下開始
                     rig.isKinematic = false;
                     rig.velocity = new Vector2(0f, -fallSpeed);
+
+                    // 移動状態に遷移するまで待機
                     await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: destroyCancellationToken);
                     MoveState().Forget();
                     return;
@@ -150,7 +163,13 @@ namespace CS_Script.Haruo
 
         private void OnBecameVisible()
         {
+            if (!rig.isKinematic)
+            {
+                return;
+            }
+
             rig.isKinematic = false;
+            MoveState().Forget();
         }
     }
 }

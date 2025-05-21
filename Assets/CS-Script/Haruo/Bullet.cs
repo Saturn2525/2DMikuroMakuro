@@ -11,6 +11,11 @@ namespace CS_Script
         public float Direction => direction;
         private float direction;
 
+        public void OnBecameInvisible()
+        {
+            Destroy(gameObject);
+        }
+
         public void SetDirection(float direction)
         {
             this.direction = direction;
