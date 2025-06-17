@@ -816,6 +816,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &385018894 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 219737837251288477, guid: 9c9b4470659a10d43903f1db7073fd7f, type: 3}
+  m_PrefabInstance: {fileID: 668486508}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &412469228
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,6 +2583,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: button (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2167008549480091380, guid: 61e238726df081544ae41ded054ebecb, type: 3}
+      propertyPath: Door
+      value: 
+      objectReference: {fileID: 385018894}
     - target: {fileID: 6003229497660917640, guid: 61e238726df081544ae41ded054ebecb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33.5
